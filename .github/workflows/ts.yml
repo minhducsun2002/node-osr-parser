@@ -1,0 +1,30 @@
+name: TypeScript compilation
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 11.x, 12.x, 13.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install Node modules
+      run: npm install
+    - name: Compile into JavaScript
+      run: npm run build
+      env:
+        CI: true
+    - name: Pushing compiled build
+      uses: actions/upload-artifact@v1
+      with:
+        name: node-osr-parser-${{ github.sha }}-${{ github.head }}.zip
+        path: dist/
+        
