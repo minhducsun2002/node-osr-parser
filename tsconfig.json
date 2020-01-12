@@ -4,8 +4,6 @@
         "allowJs": false,
         "alwaysStrict": true,
         "declaration": true,
-        "listEmittedFiles": true,
-        "listFiles": true,
         "noImplicitAny": true,
         "outDir": "dist/",
         "types": ["node", "jest"],
