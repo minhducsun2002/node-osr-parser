@@ -1,0 +1,30 @@
+{
+  "name": "osr-parser",
+  "version": "0.0.1",
+  "description": "Parser for osu! replays",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test-dev": "jest --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "Minh Duc Vo <minhducsun2002@gmail.com>",
+  "license": "CC-BY-4.0",
+  "dependencies": {
+    "@minhducsun2002/leb128": "0.1.0-1",
+    "int64-buffer": "^0.99.1007",
+    "lzma-native": "^6.0.0"
+  },
+  "files": ["dist/**/**"],
+  "devDependencies": {
+    "@types/lzma-native": "^4.0.0",
+    "@types/node": "^13.1.5",
+    "ts-node": "^8.5.4",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.4",
+    "@types/jest": "^24.0.25",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.3.0"
+  }
+}
