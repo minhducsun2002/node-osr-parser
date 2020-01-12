@@ -10,6 +10,11 @@ interface AccuracyCount {
     countMiss: number;
 }
 
+interface Healthbar {
+    timestamp: number;
+    percentage: number;
+}
+
 /**
  * Class representing a replay.
  * @see https://osu.ppy.sh/help/wiki/osu!_File_Formats/Osr_(file_format)/
@@ -44,7 +49,7 @@ export class Replay {
     maxCombo: number;
     perfect: number;
     mods: number;
-    healthbar: string;
+    healthbar: Healthbar[];
     timestamp: Date;
     replayData: string;
     scoreID: number;
@@ -121,6 +126,14 @@ export class Replay {
         return binary;
     }
 
+    private parseHealthbar(s: string) : Healthbar[] {
+        let a = s.split(',').filter(a => a).map(a => a.trim());
+        return a.map(s => {
+            const [timestamp, percentage] = s.split('|').map(a => +a);
+            return { timestamp, percentage }
+        })
+    }
+
     async parse() {
         this.gamemode = this.readByte();
         this.version = this.readInt32();
@@ -139,7 +152,7 @@ export class Replay {
         this.maxCombo = this.readInt16();
         this.perfect = this.readByte();
         this.mods = this.readInt32();
-        this.healthbar = this.readString();
+        this.healthbar = this.parseHealthbar(this.readString());
         let a = (BigInt(this.readInt64()) - EPOCH) / 10000n; this.timestamp = new Date(Number(a))
 
         let replayLength = this.readInt32();
