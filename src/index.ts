@@ -68,6 +68,15 @@ export class Replay {
         }
     }
 
+    /**
+     * Check whether offset is still in range.
+     * If not, throw
+     */
+    private checkOffset() {
+        if (this.offset >= this.buffer.byteLength)
+            throw new Error('Replay data ended unexpectedly')
+    }
+
     private readByte() {
         const out = this.buffer.slice(this.offset, this.offset + 1);
         this.offset++;
