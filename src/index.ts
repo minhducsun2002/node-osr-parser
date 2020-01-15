@@ -72,30 +72,35 @@ export class Replay {
     }
 
     private readByte() {
+        this.checkOffset();
         const out = this.buffer.slice(this.offset, this.offset + 1);
         this.offset++;
         return out.readUInt8(0);
     }
 
     private readInt16() {
+        this.checkOffset();
         const out = this.buffer.slice(this.offset, this.offset + 2);
         this.offset += 2;
         return out.readInt16LE(0);
     }
 
     private readInt32() {
+        this.checkOffset();
         const out = this.buffer.slice(this.offset, this.offset + 4);
         this.offset += 4;
         return out.readInt32LE(0);
     }
 
     private readInt64() {
+        this.checkOffset();
         const out = this.buffer.slice(this.offset, this.offset + 8);
         this.offset += 8;
         return new Uint64LE(out).toNumber();
     }
 
     private readString() {
+        this.checkOffset();
         const present = this.buffer.slice(this.offset, this.offset + 1).readInt8(0) === 0x0b;
         this.offset++;
         if (!present) return '';
@@ -110,6 +115,7 @@ export class Replay {
     }
 
     private readBinary(length: number) {
+        this.checkOffset();
         const binary = this.buffer.slice(this.offset, this.offset + length);
         this.offset += length;
         return binary;
