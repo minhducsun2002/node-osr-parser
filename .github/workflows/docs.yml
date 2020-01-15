@@ -1,0 +1,35 @@
+name: Generate docs
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [13.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install Node modules
+      run: npm install
+    - name: Generate docs
+      run: npm run docs
+      env:
+        CI: true
+    - name: Publish docs
+      uses: peaceiris/actions-gh-pages@v2.9.0
+      env:
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./docs
+        PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+      with:
+        emptyCommits: false
