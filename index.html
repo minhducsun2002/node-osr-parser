@@ -79,7 +79,7 @@
 <span class="hljs-keyword">const</span> { Replay } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'node-osr-parser'</span>);
 
 <span class="hljs-keyword">const</span> a : Buffer = readFileSync(<span class="hljs-string">'your/osr/file'</span>);
-<span class="hljs-keyword">new</span> Replay(a).parse().then(<span class="hljs-function"><span class="hljs-params">replay</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(replay.player));</code></pre>
+<span class="hljs-keyword">new</span> Replay(a).deserialize().then(<span class="hljs-function"><span class="hljs-params">replay</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(replay.player));</code></pre>
 				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
 					<h3>License</h3>
 				</a>
