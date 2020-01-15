@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Parser for osu! replays",
   "main": "dist/index.js",
-  "private": true,
   "scripts": {
     "build": "tsc",
     "test": "jest",
@@ -22,6 +21,7 @@
     "type": "git",
     "url": "https://github.com/minhducsun2002/node-osr-parser"
   },
+  "homepage": "https://minhducsun2002.github.io/node-osr-parser/",
   "bugs": {
     "url": "https://github.com/minhducsun2002/node-osr-parser/issues"
   },
