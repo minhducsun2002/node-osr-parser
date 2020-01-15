@@ -60,17 +60,6 @@ export class Replay {
 
     constructor(content: Buffer) {
         this.buffer = content;
-        // initialize all attribs
-        this.offset = 0;
-        this.gamemode = this.version = this.score = this.maxCombo = this.perfect = this.scoreID = null;
-        this.accuracies = {
-            count300k: 0,
-            count300: 0,
-            count100k: 0,
-            count100: 0,
-            count50: 0,
-            countMiss: 0
-        }
     }
 
     /**
@@ -135,6 +124,19 @@ export class Replay {
     }
 
     async deserialize() {
+        // (re-)init
+        this.offset = 0;
+        this.gamemode = this.version = this.score = this.maxCombo = this.perfect = this.scoreID = null;
+        this.accuracies = {
+            count300k: 0,
+            count300: 0,
+            count100k: 0,
+            count100: 0,
+            count50: 0,
+            countMiss: 0
+        }
+
+
         this.gamemode = this.readByte();
         this.version = this.readInt32();
         this.md5map = this.readString();
