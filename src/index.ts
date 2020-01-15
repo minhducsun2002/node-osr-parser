@@ -134,7 +134,7 @@ export class Replay {
         })
     }
 
-    async parse() {
+    async deserialize() {
         this.gamemode = this.readByte();
         this.version = this.readInt32();
         this.md5map = this.readString();

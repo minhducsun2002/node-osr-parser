@@ -9,7 +9,7 @@ test(`All replays are played by minhducsun2002`, () => {
     files.map(async f => {
         const { player } = await new Replay(
             readFileSync(join(base, f))
-        ).parse();
+        ).deserialize();
         expect(player).toBe('minhducsun2002')
     })
 })
@@ -18,7 +18,7 @@ test(`All replays are created in or after October 2018`, () => {
     files.map(async f => {
         const { timestamp } = await new Replay(
             readFileSync(join(base, f))
-        ).parse();
+        ).deserialize();
         expect(timestamp.valueOf()).toBeGreaterThanOrEqual(1538352000)
     })
 })
@@ -32,7 +32,7 @@ test(`All replays' respective beatmap hashes are parsed correctly`, () => {
     files.sort().map(async (f, i) => {
         const { md5map } = await new Replay(
             readFileSync(join(base, f))
-        ).parse();
+        ).deserialize();
         expect(md5map).toBe(hashes[i])
     })
 })
