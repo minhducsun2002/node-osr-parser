@@ -1,0 +1,14 @@
+{
+    "inputFiles": [
+        "./src"
+    ],
+    "mode": "file",
+    "name": "node-osr-parser documentation",
+    "out": "./docs",
+    "excludeNotExported": true,
+    "excludePrivate": true,
+    "exclude": "./dist/**",
+    "readme": "./README.md",
+    "hideGenerator": true,
+    "toc": false
+}

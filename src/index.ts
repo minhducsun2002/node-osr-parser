@@ -1,23 +1,109 @@
 import { decompress } from 'lzma-native'
 import { Uint64LE } from 'int64-buffer'
 import { UnsignedLEB128 } from '@minhducsun2002/leb128'
+
+/**
+ * Accuracy statistics of a replay.
+ */
 interface AccuracyCount {
+    /** 300s count */
     count300: number;
+    /**
+     * - osu!standard: 100s count
+     * - osu!catch: 100s count
+     * - osu!mania: 200s count
+     * - osu!taiko: 150s count
+     */
     count100: number;
+    /**
+     * - osu!standard: 50s count
+     * - osu!catch: small fruits count
+     * - osu!mania: 50s count
+     */
     count50: number;
+    /**
+     * - osu!standard: Gekis (300K) count
+     * - osu!mania: Max 300s count
+     */
     count300k: number;
+    /**
+     * - osu!standard: Katus (100K) count
+     * - osu!mania: 100s count
+     */
     count100k: number;
+    /**
+     * Misses count
+     */
     countMiss: number;
 }
 
+/**
+ * Amount of life at a given time
+ */
 interface Healthbar {
+    /**
+     * Time in miliseconds into the song
+     */
     timestamp: number;
+    /**
+     * Amount of life you have, ranging from 0 to 1
+     */
     percentage: number;
+}
+
+/**
+ * Game mode constants
+ */
+export enum Gamemode { STANDARD = 0, TAIKO = 1, CATCH = 2, MANIA = 3 }
+/**
+ * Key press in `Replay.replayData`.
+ */
+export enum StandardKeypress { Mouse1 = 1, Mouse2 = 2, Key1 = 4, Key2 = 8, Smoke = 16 }
+
+/**
+ * Mod in `Replay.mods`
+ */
+export enum Mods {
+    None = 0,
+    NoFail = 1,
+    Easy = 2,
+    TouchDevice = 4,
+    Hidden = 8,
+    HardRock = 16,
+    SuddenDeath = 32,
+    DoubleTime = 64,
+    Relax = 128,
+    HalfTime = 256,
+    /** Must be set along with DoubleTime (NC only gives 576) */
+    Nightcore = 512,
+    Flashlight = 1024,
+    Autoplay = 2048,
+    SpunOut = 4096,
+    Autopilot = 8192,
+    /** Must be set along with SuddenDeath */
+    Perfect = 16384,
+    Key4 = 32768,
+    Key5 = 65536,
+    Key6 = 131072,
+    Key7 = 262144,
+    Key8 = 524288,
+    FadeIn = 1048576,
+    Random = 2097152,
+    Cinema = 4194304,
+    Target = 8388608,
+    Key9 = 16777216,
+    KeyCoop = 33554432,
+    Key1 = 67108864,
+    Key3 = 134217728,
+    Key2 = 268435456,
+    ScoreV2 = 536870912,
+    Mirror = 1073741824
 }
 
 /**
  * Class representing a replay.
  * @see https://osu.ppy.sh/help/wiki/osu!_File_Formats/Osr_(file_format)/
+ * @public
  */
 export class Replay {
     /**
@@ -28,30 +114,43 @@ export class Replay {
      * - 3 : osu!mania
      */
     gamemode: number;
-    /**
-     * Game version which generated this replay.
-     */
+    /** Game version which generated this replay. */
     version: number;
-    /**
-     * MD5 hash of the beatmap played.
-     */
+    /** MD5 hash of the beatmap played. */
     md5map: string;
-    /**
-     * Player name.
-     */
+    /** Player name. */
     player: string;
-    /**
-     * Replay MD5 hash (includes certain properties of the replay)
-     */
+    /** Replay MD5 hash (includes certain properties of the replay). */
     md5replay: string;
+    /** Accuracy statistics of the replay. */
     accuracies: AccuracyCount;
+    /** Total score displayed on the score report. */
     score: number;
+    /** Greatest combo displayed on the score report. */
     maxCombo: number;
+    /**
+     * Whether the play is perfect/full combo.
+     * 
+     * A value of `1` equals no misses/slider breaks/early finished sliders.
+     */
     perfect: number;
+    /** Mods used. */
     mods: number;
+    /** Healthbar states during the replay. */
     healthbar: Healthbar[];
+    /** The replay's creation time. */
     timestamp: Date;
+    /**
+     * Replay data, separated by commas.
+     * Each part denotes an action, represented by 4 numbers : `w | x | y | z`.
+     * - `w` : Time in milliseconds since the previous action
+     * - `x` : x-coordinate of the cursor (0 - 512)
+     * - `y` : y-coordinate of the cursor (0 - 384)
+     * - `z` : Bitwise OR combination of keys/mouse buttons pressed.
+     *          See {@link StandardKeypress | StandardKeypress}.
+     */
     replayData: string;
+    /** Online score ID. */
     scoreID: number;
 
 
@@ -71,6 +170,9 @@ export class Replay {
             throw new Error('Replay data ended unexpectedly')
     }
 
+    /**
+     * Read a byte from the buffer, incrementing offset after the read operation
+     */
     private readByte() {
         this.checkOffset();
         const out = this.buffer.slice(this.offset, this.offset + 1);
@@ -121,7 +223,7 @@ export class Replay {
         return binary;
     }
 
-    private parseHealthbar(s: string) : Healthbar[] {
+    private parseHealthbar(s: string): Healthbar[] {
         let a = s.split(',').filter(a => a).map(a => a.trim());
         return a.map(s => {
             const [timestamp, percentage] = s.split('|').map(a => +a);
@@ -129,7 +231,8 @@ export class Replay {
         })
     }
 
-    async deserialize() {
+    /** Deserializing the beatmap passed. */
+    async deserialize() : Promise<Replay> {
         // (re-)init
         this.offset = 0;
         this.gamemode = this.version = this.score = this.maxCombo = this.perfect = this.scoreID = null;

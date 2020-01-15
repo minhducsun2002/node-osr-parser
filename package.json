@@ -1,5 +1,5 @@
 {
-  "name": "osr-parser",
+  "name": "@minhducsun2002/node-osr-parser",
   "version": "0.0.1",
   "description": "Parser for osu! replays",
   "main": "dist/index.js",
@@ -8,7 +8,8 @@
     "build": "tsc",
     "test": "jest",
     "dev": "jest --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "docs": "typedoc --options typedoc.json"
   },
   "author": "Minh Duc Vo <minhducsun2002@gmail.com>",
   "license": "MIT",
@@ -24,17 +25,22 @@
   "bugs": {
     "url": "https://github.com/minhducsun2002/node-osr-parser/issues"
   },
-  "keywords": ["osr", "osu", "replay"],
+  "keywords": [
+    "osr",
+    "osu",
+    "replay"
+  ],
   "files": [
     "dist/**/**"
   ],
   "readme": "README.md",
   "devDependencies": {
+    "@types/jest": "^24.0.25",
     "@types/lzma-native": "^4.0.0",
     "@types/node": "^13.1.5",
-    "typescript": "^3.7.4",
-    "@types/jest": "^24.0.25",
     "jest": "^24.9.0",
-    "ts-jest": "^24.3.0"
+    "ts-jest": "^24.3.0",
+    "typedoc": "^0.16.4",
+    "typescript": "^3.7.4"
   }
 }
