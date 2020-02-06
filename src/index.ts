@@ -5,7 +5,7 @@ import { UnsignedLEB128 } from '@minhducsun2002/leb128'
 /**
  * Accuracy statistics of a replay.
  */
-interface AccuracyCount {
+export interface AccuracyCount {
     /** 300s count */
     count300: number;
     /**
@@ -40,7 +40,7 @@ interface AccuracyCount {
 /**
  * Amount of life at a given time
  */
-interface Healthbar {
+export interface Healthbar {
     /**
      * Time in miliseconds into the song
      */
