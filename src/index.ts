@@ -268,9 +268,7 @@ export class Replay {
 
         let replayLength = this.readInt32();
         let replayBinary = this.readBinary(replayLength);
-        this.replayData = await new Promise(r => {
-            decompress(replayBinary, 0, buf => r(buf.toString()))
-        })
+        this.replayData = (await decompress(replayBinary, 0) as any as Buffer).toString();
         return this;
     }
 }
