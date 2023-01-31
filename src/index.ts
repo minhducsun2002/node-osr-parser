@@ -1,4 +1,4 @@
-import { decompress } from 'lzma-native'
+import lzma from 'lzma';
 import { Uint64LE } from 'int64-buffer'
 import { UnsignedLEB128 } from '@minhducsun2002/leb128'
 
@@ -130,7 +130,7 @@ export class Replay {
     maxCombo: number;
     /**
      * Whether the play is perfect/full combo.
-     * 
+     *
      * A value of `1` equals no misses/slider breaks/early finished sliders.
      */
     perfect: number;
@@ -268,7 +268,12 @@ export class Replay {
 
         let replayLength = this.readInt32();
         let replayBinary = this.readBinary(replayLength);
-        this.replayData = (await decompress(replayBinary, 0) as any as Buffer).toString();
+        let decompressed = lzma.decompress(replayBinary);
+        if (decompressed instanceof Uint8Array) {
+            this.replayData = new TextDecoder().decode(decompressed);
+        } else {
+            this.replayData = decompressed;
+        }
         return this;
     }
 }

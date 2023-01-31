@@ -15,7 +15,7 @@
   "dependencies": {
     "@minhducsun2002/leb128": "0.2.0",
     "int64-buffer": "^0.99.1007",
-    "lzma-native": "^6.0.0"
+    "lzma": "^2.3.2"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,6 @@
   "readme": "README.md",
   "devDependencies": {
     "@types/jest": "^24.0.25",
-    "@types/lzma-native": "^4.0.0",
     "@types/node": "^13.1.5",
     "jest": "^24.9.0",
     "ts-jest": "^24.3.0",
