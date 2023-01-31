@@ -398,10 +398,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@minhducsun2002/leb128@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@minhducsun2002/leb128/-/leb128-0.2.0.tgz#8301db597736f865154b783680845d35b25ba361"
-  integrity sha512-XckPQO6CDP0LAg3ZHIBZcjIWXgdM5vGhwhixZU78UEwaXwc33LXPl1KfvV8jCyrdU2YzplCvaNK3Mm0MDh6t1Q==
+"@minhducsun2002/leb128@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@minhducsun2002/leb128/-/leb128-1.0.0.tgz#4663f3c40c0b5bf5771c4fa1cf48f644aa52a0d5"
+  integrity sha512-eFrYUPDVHeuwWHluTG1kwNQUEUcFjVKYwPkU8z9DR1JH3AW7JtJsG9cRVGmwz809kKtGfwGJj58juCZxEvnI/g==
 
 "@types/babel__core@^7.1.0":
   version "7.20.0"
@@ -1647,11 +1647,6 @@ inherits@2:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
-
-int64-buffer@^0.99.1007:
-  version "0.99.1007"
-  resolved "https://registry.yarnpkg.com/int64-buffer/-/int64-buffer-0.99.1007.tgz#211ea089a2fdb960070a2e77cd6d17dc456a5220"
-  integrity sha512-XDBEu44oSTqlvCSiOZ/0FoUkpWu/vwjJLGSKDabNISPQNZ5wub1FodGHBljRsrR0IXRPq7SslshZYMuA55CgTQ==
 
 internal-slot@^1.0.4:
   version "1.0.4"

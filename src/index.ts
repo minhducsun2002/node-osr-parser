@@ -1,5 +1,4 @@
 import lzma from 'lzma';
-import { Uint64LE } from 'int64-buffer'
 import { UnsignedLEB128 } from '@minhducsun2002/leb128'
 
 /**
@@ -154,10 +153,10 @@ export class Replay {
     scoreID: number;
 
 
-    private buffer: Buffer;
+    private buffer: Uint8Array;
     private offset: number;
 
-    constructor(content: Buffer) {
+    constructor(content: Uint8Array) {
         this.buffer = content;
     }
 
@@ -170,40 +169,50 @@ export class Replay {
             throw new Error('Replay data ended unexpectedly')
     }
 
+    private parseIntLE(bytes : Uint8Array) {
+        let res = 0;
+        for (let i = bytes.length - 1 ; i >= 0 ; i--) {
+            res *= 256;
+            res += bytes[i];
+        }
+
+        return res;
+    }
+
     /**
      * Read a byte from the buffer, incrementing offset after the read operation
      */
     private readByte() {
         this.checkOffset();
-        const out = this.buffer.slice(this.offset, this.offset + 1);
-        this.offset++;
-        return out.readUInt8(0);
+        let result = this.parseIntLE(this.buffer.slice(this.offset, this.offset + 1));
+        this.offset += 1;
+        return result;
     }
 
     private readInt16() {
         this.checkOffset();
-        const out = this.buffer.slice(this.offset, this.offset + 2);
+        let result = this.parseIntLE(this.buffer.slice(this.offset, this.offset + 2));
         this.offset += 2;
-        return out.readInt16LE(0);
+        return result;
     }
 
     private readInt32() {
         this.checkOffset();
-        const out = this.buffer.slice(this.offset, this.offset + 4);
+        let result = this.parseIntLE(this.buffer.slice(this.offset, this.offset + 4));
         this.offset += 4;
-        return out.readInt32LE(0);
+        return result;
     }
 
     private readInt64() {
         this.checkOffset();
-        const out = this.buffer.slice(this.offset, this.offset + 8);
+        let result = this.parseIntLE(this.buffer.slice(this.offset, this.offset + 8));
         this.offset += 8;
-        return new Uint64LE(out).toNumber();
+        return result;
     }
 
     private readString() {
         this.checkOffset();
-        const present = this.buffer.slice(this.offset, this.offset + 1).readInt8(0) === 0x0b;
+        const present = this.buffer[this.offset] === 0x0b;
         this.offset++;
         if (!present) return '';
         else {
