@@ -240,8 +240,11 @@ export class Replay {
         })
     }
 
-    /** Deserializing the beatmap passed. */
-    async deserialize() : Promise<Replay> {
+    /**
+     * Deserializing the beatmap passed.
+     * @param [deserializeReplayData=true] whether to deserialize replay events. Default true.
+     */
+    async deserialize(deserializeReplayData = true) : Promise<Replay> {
         // (re-)init
         this.offset = 0;
         this.gamemode = this.version = this.score = this.maxCombo = this.perfect = this.scoreID = null;
@@ -275,13 +278,15 @@ export class Replay {
         this.healthbar = this.parseHealthbar(this.readString());
         let a = (BigInt(this.readInt64()) - EPOCH) / 10000n; this.timestamp = new Date(Number(a))
 
-        let replayLength = this.readInt32();
-        let replayBinary = this.readBinary(replayLength);
-        let decompressed = lzma.decompress(replayBinary);
-        if (decompressed instanceof Uint8Array) {
-            this.replayData = new TextDecoder().decode(decompressed);
-        } else {
-            this.replayData = decompressed;
+        if (deserializeReplayData) {
+            let replayLength = this.readInt32();
+            let replayBinary = this.readBinary(replayLength);
+            let decompressed = lzma.decompress(replayBinary);
+            if (decompressed instanceof Uint8Array) {
+                this.replayData = new TextDecoder().decode(decompressed);
+            } else {
+                this.replayData = decompressed;
+            }
         }
         return this;
     }
