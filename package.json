@@ -1,6 +1,6 @@
 {
   "name": "@minhducsun2002/node-osr-parser",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Parser for osu! replays",
   "main": "dist/index.js",
   "scripts": {
